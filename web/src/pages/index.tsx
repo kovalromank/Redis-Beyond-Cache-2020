@@ -5,7 +5,7 @@ import Alert from '@material-ui/lab/Alert';
 import { useQueryParam, StringParam, JsonParam } from 'use-query-params';
 
 import Layout from '../components/layout';
-import User from '../components/User';
+import User from '../components/user';
 
 const IndexPage = () => {
   // const [code] = useQueryParam('code', NumberParam);
