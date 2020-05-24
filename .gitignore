@@ -51,14 +51,6 @@ typings/
 # Output of 'npm pack'
 *.tgz
 
-# environment variable files
-.env.local
-.env.*.local
-
-# gatsby files
-.cache/
-public
-
 # Mac files
 .DS_Store
 
@@ -68,3 +60,4 @@ yarn-error.log
 .pnp.js
 # Yarn Integrity file
 .yarn-integrity
+

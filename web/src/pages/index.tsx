@@ -1,54 +1,67 @@
 import React from 'react';
 
-import { Snackbar, Button, Grid } from '@material-ui/core';
-import Alert from '@material-ui/lab/Alert';
+import { PageProps } from 'gatsby';
+import { connect, useDispatch } from 'react-redux';
 import { useQueryParam, StringParam, JsonParam } from 'use-query-params';
+import { Snackbar, Button, Grid, SnackbarCloseReason } from '@material-ui/core';
+
+import Alert from '../components/alert';
+import { IState } from '../state/createStore';
+import { ILoginState } from '../state/reducers/login';
+import { login } from '../state/actions/login';
 
 import Layout from '../components/layout';
-import User from '../components/user';
 
-const IndexPage = () => {
-  // const [code] = useQueryParam('code', NumberParam);
-  const [data] = useQueryParam('data', JsonParam);
+type IndexPageProps = PageProps & ILoginState;
+
+const IndexPage: React.FunctionComponent<IndexPageProps> = ({ name, image, navigate }) => {
+  const href = `${process.env.API_URL}/login/spotify`;
+
+  const [data]: [ILoginState, any] = useQueryParam('data', JsonParam);
   const [error] = useQueryParam('error', StringParam);
-
   const [open, setOpen] = React.useState(!!error);
+  const dispatch = useDispatch();
 
-  const handleClose = (event, reason?) => {
+  const handleClose = (event: React.SyntheticEvent<any>, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') return;
     setOpen(false);
   };
 
-  const href = `${process.env.API_URL}/login/spotify`;
+  if (data) {
+    dispatch(login(data));
+    typeof window !== 'undefined' && navigate('/user', { replace: true });
+    return null;
+  }
 
-  const view = data?.user ? (
-    <User user={data?.user} />
-  ) : (
-    <Button href={href} variant="contained" color="primary">
-      Login with Spotify
-    </Button>
-  );
+  if (name && !error) {
+    typeof window !== 'undefined' && navigate('/user', { replace: true });
+    return null;
+  }
 
   return (
-    <>
-      <Layout title="🏡 Home">
-        <Grid
-          className="fill-height"
-          container
-          direction="column"
-          justify="center"
-          alignItems="center"
-        >
-          {view}
-        </Grid>
-      </Layout>
+    <Layout name={name} image={image} title="🔑 Login">
+      <Grid
+        className="fill-height"
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Button size="large" href={href} variant="contained" color="primary">
+          Login with Spotify
+        </Button>
+      </Grid>
       <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert onClose={handleClose} variant="filled" elevation={6} severity="error">
-          {error}
-        </Alert>
+        <Alert severity="error" onClose={handleClose}>{error}</Alert>
       </Snackbar>
-    </>
+    </Layout>
   );
 };
 
-export default IndexPage;
+const mapStateToProps = (state: IState) => {
+  return {
+    ...state.loginReducer,
+  };
+};
+
+export default connect(mapStateToProps)(IndexPage);

@@ -4,13 +4,13 @@ import { Grid } from '@material-ui/core';
 
 import Layout from '../components/layout';
 
-const NotFoundPage = () => {
-  const skull = (
-    <span role="img" aria-label="Skull">
-      💀
-    </span>
-  );
+const skull = (
+  <span role="img" aria-label="Skull">
+    💀
+  </span>
+);
 
+const NotFoundPage = () => {
   return (
     <Layout title="😵 404: Not found">
       <Grid

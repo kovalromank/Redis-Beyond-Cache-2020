@@ -6,48 +6,50 @@
  */
 
 import React from 'react';
-import { useStaticQuery, graphql } from 'gatsby';
 
 import SEO from './seo';
+import AppBar from './app-bar';
+import Footer from './footer';
 
-import '../scss/components/layout.scss';
+import '../scss/layouts/default.scss';
 
-type LayoutProps = {
+type DefaultLayoutProps = {
   description?: string;
   lang?: string;
   meta?: Array<HTMLMetaElement>;
+  fixedBar?: boolean;
   title: string;
+  name?: string;
+  image?: {
+    width?: number;
+    height?: number;
+    url: string;
+  };
 };
 
-const Layout: React.FunctionComponent<LayoutProps> = ({
+const DefaultLayout: React.FunctionComponent<DefaultLayoutProps> = ({
   children,
   title,
   description,
   lang,
   meta,
+  name,
+  image,
 }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-    }
-  `);
-
   return (
     <>
       <SEO title={title} description={description} lang={lang} meta={meta} />
       <div className="app">
         <div className="app-wrap">
+          <AppBar name={name} image={image} />
           <main className="app-content">
             <div className="app-content-wrap">{children}</div>
           </main>
+          <Footer />
         </div>
       </div>
     </>
   );
 };
 
-export default Layout;
+export default DefaultLayout;

@@ -8,3 +8,20 @@
   height: auto;
   max-width: 100%;
 }
+
+.grow {
+  flex-grow: 1;
+}
+
+.shrink {
+  flex-grow: 0;
+  flex-shrink: 1;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.clickable {
+  cursor: pointer;
+}
