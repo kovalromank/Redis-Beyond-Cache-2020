@@ -1,32 +1,44 @@
 import React from 'react';
 
-import { Card } from '@material-ui/core';
+import { connect } from 'react-redux';
+import PlaylistMusic from 'mdi-material-ui/PlaylistMusic';
+
+import { IState } from '../../state/createStore';
+import { IUserState } from '../../state/reducers/user';
 
 import Carousel from '../carousel';
+import CarouselItem from '../carousel-item';
 
 type PlaylistsProps = {
-  playlists: SpotifyApi.PlaylistObjectSimplified[];
+  playlists: IUserState['playlists'];
 };
 
+const Title: React.FunctionComponent = () => (
+  <div>
+    Your top <span className="label">playlists</span>
+  </div>
+);
+
 const Playlists: React.FunctionComponent<PlaylistsProps> = ({ playlists }) => {
-  console.log(playlists);
-
   return (
-    // <GridList cellHeight={160} cols={3}>
-
-    // </GridList>
-    <Carousel>
+    <Carousel title={<Title />}>
       {playlists.map((playlist, i) => (
-        <div key={playlist.id} style={{ width: 300 }}>
-          {playlist.images?.length && (
-            <img width="300" src={playlist.images[0].url} alt={`Playlist ${i} cover`} />
-          )}
-          <div>{playlist.name}</div>
-          <div>{playlist.owner.display_name}</div>
-        </div>
+        <CarouselItem
+          key={i}
+          title={playlist.name}
+          subtitle={playlist.owner.display_name}
+          image={playlist.images?.length ? playlist.images[0].url : undefined}
+          imagePlaceholder={<PlaylistMusic color="action" fontSize="inherit" />}
+        />
       ))}
     </Carousel>
   );
 };
 
-export default Playlists;
+const mapStateToProps = (state: IState) => {
+  return {
+    playlists: state.userReducer.playlists,
+  };
+};
+
+export default connect(mapStateToProps)(Playlists);

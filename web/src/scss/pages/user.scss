@@ -1,0 +1,22 @@
+@import '../variables';
+
+.user-data {
+  .playlists {
+    .label {
+      color: $cyan-500;
+    }
+  }
+
+  .artists {
+    background-color: #ffffff;
+    .label {
+      color: $purple-500;
+    }
+  }
+
+  .tracks {
+    .label {
+      color: $deep-orange-500;
+    }
+  }
+}

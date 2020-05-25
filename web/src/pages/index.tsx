@@ -1,9 +1,10 @@
 import React from 'react';
 
-import { PageProps } from 'gatsby';
 import { connect, useDispatch } from 'react-redux';
-import { useQueryParam, StringParam, JsonParam } from 'use-query-params';
+import qs from 'query-string';
 import { Snackbar, Button, Grid, SnackbarCloseReason } from '@material-ui/core';
+
+import { useHistory, useLocation } from 'react-router-dom';
 
 import Alert from '../components/alert';
 import { IState } from '../state/createStore';
@@ -12,34 +13,44 @@ import { login } from '../state/actions/login';
 
 import Layout from '../components/layout';
 
-type IndexPageProps = PageProps & ILoginState;
+type IndexPageProps = { session: string };
 
-const IndexPage: React.FunctionComponent<IndexPageProps> = ({ name, image, navigate }) => {
-  const href = `${process.env.API_URL}/login/spotify`;
+const IndexPage: React.FunctionComponent<IndexPageProps> = ({ session }) => {
+  const href = `${process.env.REACT_APP_API_URL}/login/spotify`;
 
-  const [data]: [ILoginState, any] = useQueryParam('data', JsonParam);
-  const [error] = useQueryParam('error', StringParam);
-  const [open, setOpen] = React.useState(!!error);
   const dispatch = useDispatch();
+
+  const history = useHistory();
+  const location = useLocation();
+
+  const query = qs.parse(location.search);
+  const { error } = query;
+
+  React.useEffect(() => {
+    if (query.data) {
+      try {
+        const data: ILoginState = JSON.parse(query.data as string);
+        dispatch(login(data));
+        history.replace('/user');
+        return;
+      } catch (err) {}
+    }
+
+    if (session && !error) {
+      typeof window !== 'undefined' && history.replace('/user');
+      return;
+    }
+  }, [session, history, query, error, dispatch]);
+
+  const [open, setOpen] = React.useState(!!error);
 
   const handleClose = (event: React.SyntheticEvent<any>, reason?: SnackbarCloseReason) => {
     if (reason === 'clickaway') return;
     setOpen(false);
   };
 
-  if (data) {
-    dispatch(login(data));
-    typeof window !== 'undefined' && navigate('/user', { replace: true });
-    return null;
-  }
-
-  if (name && !error) {
-    typeof window !== 'undefined' && navigate('/user', { replace: true });
-    return null;
-  }
-
   return (
-    <Layout name={name} image={image} title="🔑 Login">
+    <Layout title="Login">
       <Grid
         className="fill-height"
         container
@@ -52,7 +63,9 @@ const IndexPage: React.FunctionComponent<IndexPageProps> = ({ name, image, navig
         </Button>
       </Grid>
       <Snackbar open={open} autoHideDuration={4000} onClose={handleClose}>
-        <Alert severity="error" onClose={handleClose}>{error}</Alert>
+        <Alert severity="error" onClose={handleClose}>
+          {error}
+        </Alert>
       </Snackbar>
     </Layout>
   );
@@ -60,7 +73,7 @@ const IndexPage: React.FunctionComponent<IndexPageProps> = ({ name, image, navig
 
 const mapStateToProps = (state: IState) => {
   return {
-    ...state.loginReducer,
+    session: state.loginReducer.session,
   };
 };
 

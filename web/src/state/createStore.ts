@@ -13,22 +13,18 @@ export type IState = {
   userReducer: IUserState;
 };
 
-export default (preloadedState: IState) => {
+export default () => {
   return createStore(
     combinedReducers,
-    getLoadedState(preloadedState),
-    composeWithDevTools(applyMiddleware(save({ states: ['loginReducer'] }), userCustomMiddleware()))
+    getLoadedState(),
+    composeWithDevTools(
+      applyMiddleware(save({ states: ['loginReducer'] }), userCustomMiddleware()),
+    ),
   );
 };
 
-const getLoadedState = (preloadedState: IState | any) => {
-  if (typeof window !== 'undefined')
-    return {
-      ...preloadedState,
-      ...load({ states: ['loginReducer'], disableWarnings: true }),
-    };
-
+const getLoadedState = () => {
   return {
-    ...preloadedState,
+    ...load({ states: ['loginReducer'] }),
   };
 };

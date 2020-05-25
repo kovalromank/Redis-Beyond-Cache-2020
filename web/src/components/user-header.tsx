@@ -1,26 +1,24 @@
 import React from 'react';
 
-import { navigate } from 'gatsby';
-import { useDispatch } from 'react-redux';
-import { Avatar, Box, Link } from '@material-ui/core';
+import { connect, useDispatch } from 'react-redux';
+import { Avatar, Box } from '@material-ui/core';
 
 import { logout } from '../state/actions/login';
+import { IState } from '../state/createStore';
+import { ILoginState } from '../state/reducers/login';
 
 type UserHeaderProps = {
-  name: string;
-  image?: {
-    width?: number;
-    height?: number;
-    url: string;
-  };
+  name: ILoginState['name'];
+  image: ILoginState['image'];
 };
 
 const UserHeader: React.FunctionComponent<UserHeaderProps> = ({ name, image }) => {
   const dispatch = useDispatch();
 
+  if (!name) return null;
+
   const onLogout = () => {
     dispatch(logout());
-    typeof window !== 'undefined' && navigate('/');
   };
 
   return (
@@ -40,4 +38,11 @@ const UserHeader: React.FunctionComponent<UserHeaderProps> = ({ name, image }) =
   );
 };
 
-export default UserHeader;
+const mapStateToProps = (state: IState) => {
+  return {
+    name: state.loginReducer.name,
+    image: state.loginReducer.image,
+  };
+};
+
+export default connect(mapStateToProps)(UserHeader);

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Toolbar, IconButton, Link } from '@material-ui/core';
+import { Toolbar, IconButton } from '@material-ui/core';
 import Github from 'mdi-material-ui/Github';
 
 const DefaultFooter = () => {

@@ -1,74 +1,78 @@
 import React from 'react';
 
-import { PageProps } from 'gatsby';
 import { connect, useDispatch } from 'react-redux';
-import { Button, Grid, CircularProgress } from '@material-ui/core';
 
 import { IState } from '../state/createStore';
 import { ILoginState } from '../state/reducers/login';
 import { IUserState } from '../state/reducers/user';
 import { userRequested } from '../state/actions/user';
 
+import { useHistory } from 'react-router-dom';
+
 import Layout from '../components/layout';
-import UserView from '../components/user';
+import PageLoading from '../components/page-loading';
+import PlaylistsSection from '../components/user/playlists';
+import ArtistsSection from '../components/user/artists';
+import TracksSection from '../components/user/tracks';
 
-import { axios } from '../utils';
+import '../scss/pages/user.scss';
 
-type UserPageProps = PageProps & ILoginState & IUserState;
+type UserPageProps = {
+  session: ILoginState['session'];
+  name: ILoginState['name'];
+  fetching: IUserState['fetching'];
+  error: IUserState['error'];
+};
 
-const UserPage: React.FunctionComponent<UserPageProps> = ({
-  session,
-  name,
-  image,
-  navigate,
-  playlists,
-  artists,
-  tracks,
-  fetching,
-  error,
-}) => {
-  if (!name) {
-    typeof window !== 'undefined' && navigate('/', { replace: true });
-    return null;
-  }
+const UserPage: React.FunctionComponent<UserPageProps> = ({ session, name, fetching, error }) => {
+  const history = useHistory();
 
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    dispatch(userRequested(session));
-  }, []);
+    if (!session) {
+      history.replace('/');
+      return;
+    }
 
-  if (error) {
-    typeof window !== 'undefined' &&
-      navigate(`/?error=${encodeURIComponent((error as any).message || 'Error occurred')}`, {
-        replace: true,
-      });
-    return null;
-  }
+    if (error) {
+      history.replace(`/?error=${encodeURIComponent((error as any).message || 'Error occurred')}`);
+      return;
+    }
+
+    dispatch(userRequested(session));
+  }, [dispatch, history, session, error]);
 
   return (
-    <Layout name={name} image={image} title={`👋 ${name}`}>
-      <Grid
-        className="fill-height"
-        container
-        direction="column"
-        justify="center"
-        alignItems="center"
-      >
-        {fetching || !playlists?.length ? (
-          <CircularProgress size={80} thickness={5} />
+    <Layout title={`${name}`}>
+      <div className="fill-height">
+        {fetching ? (
+          <PageLoading disableShrink={true} />
         ) : (
-          <UserView playlists={playlists} artists={artists} tracks={tracks} />
+          <div className="user-data">
+            <div className="playlists">
+              <PlaylistsSection />
+            </div>
+            <div className="artists">
+              <ArtistsSection />
+            </div>
+            <div className="tracks">
+              <TracksSection />
+            </div>
+          </div>
+          // <UserView playlists={playlists} artists={artists} tracks={tracks} />
         )}
-      </Grid>
+      </div>
     </Layout>
   );
 };
 
 const mapStateToProps = (state: IState) => {
   return {
-    ...state.loginReducer,
-    ...state.userReducer,
+    session: state.loginReducer.session,
+    name: state.loginReducer.name,
+    error: state.userReducer.error,
+    fetching: state.userReducer.fetching,
   };
 };
 
