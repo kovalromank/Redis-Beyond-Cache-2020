@@ -1,102 +1,76 @@
 import React from 'react';
 
-import { Box } from '@material-ui/core';
-import MultiCarousel from 'react-multi-carousel';
+import ReactMultiCarousel, { ButtonGroupProps } from 'react-multi-carousel';
+import { Grid, IconButton, Container, Typography, Box, useMediaQuery } from '@material-ui/core';
+import ChevronLeft from 'mdi-material-ui/ChevronLeft';
+import ChevronRight from 'mdi-material-ui/ChevronRight';
 
 import 'react-multi-carousel/lib/styles.css';
+import '../scss/components/carousel.scss';
 
 const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
+  xl: {
+    breakpoint: { max: 1920, min: 1600 },
+    items: 4,
+  },
+  lg: {
+    breakpoint: { max: 1600, min: 1280 },
     items: 3,
-    slidesToSlide: 3, // optional, default to 1.
   },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
+  md: {
+    breakpoint: { max: 1280, min: 960 },
     items: 2,
-    slidesToSlide: 2, // optional, default to 1.
   },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
+  xs: {
+    breakpoint: { max: 960, min: 0 },
     items: 1,
-    slidesToSlide: 1, // optional, default to 1.
   },
 };
 
-const Carousel: React.FunctionComponent = ({ children }) => {
-  const items = [
-    {
-      image: 'https://i.picsum.photos/id/1/300/200.jpg',
-      id: 1,
-      name: 'Playlist',
-      author: 'Roman',
-    },
-  ];
+const ButtonGroup: React.FunctionComponent<ButtonGroupProps> = ({ next, previous }) => {
+  return (
+    <Container>
+      <Grid container justify="flex-end">
+        <IconButton onClick={previous} aria-label="previous slide">
+          <ChevronLeft fontSize="large" />
+        </IconButton>
+        <IconButton onClick={next} aria-label="next slide">
+          <ChevronRight fontSize="large" />
+        </IconButton>
+      </Grid>
+    </Container>
+  );
+};
+
+type CarouselProps = {
+  title: React.ReactElement;
+};
+
+const Carousel: React.FunctionComponent<CarouselProps> = ({ title, children }) => {
+  const sm = useMediaQuery('(min-width:500px)');
 
   return (
-    <MultiCarousel
-      // swipeable={true}
-      // draggable={true}
-      // showDots={true}
-      responsive={responsive}
-      ssr={true} // means to render carousel on server-side.
-      infinite={false}
-      // autoPlay={this.props.deviceType !== 'mobile' ? true : false}
-      // autoPlaySpeed={1000}
-      // keyBoardControl={true}
-      // customTransition="all .5"
-      // transitionDuration={500}
-      // containerClass="carousel-container"
-      // removeArrowOnDeviceType={['tablet', 'mobile']}
-      deviceType={'desktop'}
-      // dotListClass="custom-dot-list-style"
-      itemClass="carousel-item-padding-40-px"
-    >
-      {/* {children} */}
-
-      <div style={{ width: '100%' }}>
-        <div style={{ height: 300, width: 300 }}>
-          <div
-            className="image"
-            style={{
-              width: 300,
-              height: 300,
-              backgroundImage: 'url(https://i.picsum.photos/id/1/300/200.jpg)',
-            }}
-          ></div>
-        </div>
-        <div>1</div>
-      </div>
-      <div style={{ width: '100%' }}>
-        <div style={{ height: 300, width: 300 }}>
-          <div
-            className="image"
-            style={{
-              width: 300,
-              height: 300,
-              backgroundImage: 'url(https://i.picsum.photos/id/2/300/200.jpg)',
-            }}
-          ></div>
-        </div>
-        <div>1</div>
-      </div>
-      <div style={{ width: '100%' }}>
-        <div style={{ height: 300, width: 300 }}>
-          <div
-            className="image"
-            style={{
-              width: 300,
-              height: 300,
-              backgroundImage: 'url(https://i.picsum.photos/id/3/300/200.jpg)',
-            }}
-          ></div>
-        </div>
-        <div>1</div>
-      </div>
-      {/* {items.map((item, i) => (
-       
-      ))} */}
-    </MultiCarousel>
+    <Box py={5}>
+      <Container>
+        <Box mb={2}>
+          <Typography variant="h2">{title}</Typography>
+        </Box>
+      </Container>
+      <ReactMultiCarousel
+        className="carousel"
+        responsive={responsive}
+        showDots={false}
+        arrows={false}
+        // draggable={false}
+        // swipeable={false}
+        renderButtonGroupOutside={true}
+        customButtonGroup={<ButtonGroup />}
+        infinite={true}
+        centerMode={sm}
+      >
+        {children}
+      </ReactMultiCarousel>
+    </Box>
   );
 };
 

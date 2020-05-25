@@ -1,4 +1,4 @@
-import { USER_FAILED, USER_REQUESTED, USER_SUCCESS } from '../types/user';
+import { USER_FAILED, USER_REQUESTED, USER_SUCCESS, USER_FETCHING } from '../types/user';
 import { IUser } from '../../models/user';
 import { IUserError } from '../../services/user.service';
 
@@ -7,6 +7,10 @@ export const userRequested = (session: string) => {
     type: USER_REQUESTED,
     payload: session,
   };
+};
+
+export const userFetching = () => {
+  return { type: USER_FETCHING };
 };
 
 export const userSuccess = (userData: { data: IUser }) => {

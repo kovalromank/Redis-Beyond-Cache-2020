@@ -1,4 +1,4 @@
-import { USER_FAILED, USER_REQUESTED, USER_SUCCESS } from '../types/user';
+import { USER_FAILED, USER_REQUESTED, USER_SUCCESS, USER_FETCHING } from '../types/user';
 
 export type IUserState = SpotifyDetails & { fetching: boolean; error: object | undefined };
 
@@ -6,7 +6,7 @@ export const initialState = {
   playlists: [],
   artists: [],
   tracks: [],
-  fetching: false,
+  fetching: true,
   error: undefined,
 };
 
@@ -19,25 +19,37 @@ const reducer = (state: IUserState = initialState, action: IAction = {}): IUserS
   const { type, payload } = action;
 
   switch (type) {
-    case USER_REQUESTED:
+    case USER_FETCHING:
       return {
-        ...initialState,
         fetching: true,
         error: undefined,
+        playlists: [],
+        artists: [],
+        tracks: [],
+      };
+    case USER_REQUESTED:
+      return {
+        fetching: true,
+        error: undefined,
+        playlists: [],
+        artists: [],
+        tracks: [],
       };
 
     case USER_SUCCESS:
       return {
-        ...payload,
         fetching: false,
         error: undefined,
+        ...payload,
       };
 
     case USER_FAILED:
       return {
-        ...state,
         fetching: false,
         error: payload,
+        playlists: [],
+        artists: [],
+        tracks: [],
       };
 
     default:

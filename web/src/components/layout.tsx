@@ -1,30 +1,22 @@
-/**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
- *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
- */
-
 import React from 'react';
 
 import SEO from './seo';
 import AppBar from './app-bar';
 import Footer from './footer';
 
-import '../scss/layouts/default.scss';
+import '../scss/components/layout.scss';
+import { makeStyles } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+  offset: theme.mixins.toolbar,
+}));
 
 type DefaultLayoutProps = {
   description?: string;
   lang?: string;
   meta?: Array<HTMLMetaElement>;
-  fixedBar?: boolean;
+  offset?: boolean;
   title: string;
-  name?: string;
-  image?: {
-    width?: number;
-    height?: number;
-    url: string;
-  };
 };
 
 const DefaultLayout: React.FunctionComponent<DefaultLayoutProps> = ({
@@ -33,15 +25,17 @@ const DefaultLayout: React.FunctionComponent<DefaultLayoutProps> = ({
   description,
   lang,
   meta,
-  name,
-  image,
+  offset,
 }) => {
+  const classes = useStyles();
+
   return (
     <>
       <SEO title={title} description={description} lang={lang} meta={meta} />
       <div className="app">
         <div className="app-wrap">
-          <AppBar name={name} image={image} />
+          <AppBar />
+          {offset && <div className={classes.offset}></div>}
           <main className="app-content">
             <div className="app-content-wrap">{children}</div>
           </main>
@@ -50,6 +44,10 @@ const DefaultLayout: React.FunctionComponent<DefaultLayoutProps> = ({
       </div>
     </>
   );
+};
+
+DefaultLayout.defaultProps = {
+  offset: true,
 };
 
 export default DefaultLayout;

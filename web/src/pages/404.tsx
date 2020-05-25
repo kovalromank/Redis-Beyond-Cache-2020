@@ -12,7 +12,7 @@ const skull = (
 
 const NotFoundPage = () => {
   return (
-    <Layout title="😵 404: Not found">
+    <Layout title="404: Not found">
       <Grid
         className="fill-height"
         container
