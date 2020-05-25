@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as express from 'express';
 import * as favicon from 'serve-favicon';
 import * as cors from 'cors';
+import * as nocache from 'nocache';
 
 import Routers from './routers';
 
@@ -20,11 +21,13 @@ app.set('env', process.env.NODE_ENV);
 
 app.set('trust proxy', true);
 
-app.use(cors());
-
 app.use(favicon(path.join('.', 'public', 'favicon-32x32.png')));
 
-app.use(Routers);
+app.use(nocache());
+
+app.use(cors());
+
+app.use('/api', Routers);
 
 app.use(notFoundErrorHandler);
 

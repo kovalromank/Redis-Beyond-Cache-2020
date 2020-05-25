@@ -27,6 +27,7 @@
     "express": "^4.17.1",
     "express-validation": "^3.0.2",
     "ioredis": "^4.16.3",
+    "nocache": "^2.1.0",
     "pino": "^6.2.1",
     "serve-favicon": "^2.5.0",
     "spotify-web-api-node": "^4.0.0",
