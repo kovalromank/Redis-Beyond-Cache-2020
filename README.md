@@ -38,12 +38,10 @@ Install the necessary libraries using `npm`
 $ npm install
 ```
 
-Rename `example.env` to `.env.development` and replace `XXX` values with your own.<br>
-
-Start the Gatsby development server and go to `http://localhost:8000` in your browser
+Start the React development server and visit `http://localhost:8000` in your browser
 
 ```bash
-$ npm run develop
+$ npm start
 ```
 
 ### :robot: For the api
