@@ -135,7 +135,7 @@ class AudioAnalysis:
         #print(max_step)
         for i in range(max_step):
             # print(i, a_duration_of_sound+i)
-            subprocess.getoutput("sox " + self.videoPath + " video/file_out" + str(
+            subprocess.getoutput("sox " + self.videoPath + " /root/audio_analysis/video/file_out" + str(
                 i) + ".wav trim " + str(i) + " " + str(
                 int(self.a_duration_of_sound)))
             dict_[i] = "file_out" + str(i) + ".wav"
@@ -143,7 +143,7 @@ class AudioAnalysis:
 
     def correlation_find(self, val):
         for i in val:
-            self.correlate_final("video/" + val[i])
+            self.correlate_final("/root/audio_analysis/video" + val[i])
             # print(i)
 
         if len(self.max_offset) > 0:
@@ -161,9 +161,9 @@ class SpotubeDownload():
     def spotify_download(self):
         #print(subprocess.getoutput("cd audio_dir & spotdl --song " + self.slink + " -f D:/Documents/csc148/AudioAnalysis/audio_dir"))
         print(subprocess.getoutput(
-            "cd audio_dir/; spotdl --song " + self.slink + " -f /audio_analysis/audio_dir"))
+            "cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -f /root/audio_analysis/audio_dir"))
         #print(subprocess.getoutput("cd audio_dir & for %a in (*.*) do ren \"%a\" \"audio.m4a\" & ffmpeg -i audio.m4a audio.wav"))
-        print(subprocess.getoutput("cd audio_dir/; find . -type f -name \"*.txt\" -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.txt\"' \;"))
+        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name \"*.txt\" -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.txt\"' \;"))
     def youtube_download(self):
         #print(self.ylink)
         ydl_opts = {
@@ -173,7 +173,7 @@ class SpotubeDownload():
                 'preferredcodec': 'wav',
                 'preferredquality': '192',
             }],
-            'outtmpl': '/video_dir/video.%(ext)s'
+            'outtmpl': '/root/audio_analysis/video_dir/video.%(ext)s'
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.ylink])
@@ -188,7 +188,7 @@ if __name__ == '__main__':
     download = SpotubeDownload(path_1, path_2)
     download.youtube_download()
     download.spotify_download()
-    audio = AudioAnalysis("audio_dir/audio.wav", "video_dir/video.wav")
+    audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav", "/root/audio_analysis/video_dir/video.wav")
 
     val = audio.find_max_correlation()
     print(val)
