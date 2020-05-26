@@ -3,7 +3,7 @@ import React from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { Avatar, Box } from '@material-ui/core';
 
-import { logout } from '../state/actions/login';
+import { logoutRequested } from '../state/actions/login';
 import { IState } from '../state/createStore';
 import { ILoginState } from '../state/reducers/login';
 
@@ -18,7 +18,7 @@ const UserHeader: React.FunctionComponent<UserHeaderProps> = ({ name, image }) =
   if (!name) return null;
 
   const onLogout = () => {
-    dispatch(logout());
+    dispatch(logoutRequested());
   };
 
   return (

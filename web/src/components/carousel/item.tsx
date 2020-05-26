@@ -1,13 +1,14 @@
 import React from 'react';
 
-// import PlayCircleOutline from 'mdi-material-ui/PlayCircleOutline';
+import { Grid, Typography, CardContent, Box } from '@material-ui/core';
 
-import { Grid, Typography, CardContent } from '@material-ui/core';
+import MediaButton from './media-button';
 
 type CarouselItemProps = {
   image?: string;
   title?: string;
   subtitle?: string;
+  spotifyURI: string;
   imagePlaceholder: React.ReactElement;
 };
 
@@ -16,6 +17,7 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
   title,
   subtitle,
   imagePlaceholder,
+  spotifyURI,
 }) => {
   return (
     <div className="wrapper">
@@ -36,11 +38,13 @@ const CarouselItem: React.FunctionComponent<CarouselItemProps> = ({
         )}
         <CardContent>
           <Grid container wrap="nowrap" alignItems="center">
-            {/* <Grid item>
-              <IconButton aria-label="play">
-                <PlayCircleOutline />
-              </IconButton>
-            </Grid> */}
+            <Grid item>
+              <Box pr={2}>
+                <Grid container alignContent="center" className="clickable">
+                  <MediaButton spotifyURI={spotifyURI} />
+                </Grid>
+              </Box>
+            </Grid>
             <Grid item className="grow overflow-hidden">
               <div>
                 {title && (

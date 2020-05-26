@@ -1,6 +1,7 @@
 import { USER_FAILED, USER_REQUESTED, USER_SUCCESS, USER_FETCHING } from '../types/user';
+import { IUser } from '../../models/user';
 
-export type IUserState = SpotifyDetails & { fetching: boolean; error: object | undefined };
+export type IUserState = IUser & { fetching: boolean; error: object | undefined };
 
 export const initialState = {
   playlists: [],

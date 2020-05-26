@@ -4,6 +4,8 @@ type SpotifyDetails = {
   tracks: SpotifyApi.TrackObjectFull[];
 };
 
+type SpotifyMediaPlay = SpotifyApi.TrackObjectFull;
+
 type SpotifySession = {
   session: string;
   name: string;

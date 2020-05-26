@@ -11,7 +11,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install production dependencies.
-RUN npm ci
+RUN npm ci && npm i --only=production -g @binxhealth/pino-stackdriver
 
 # Copy local code to the container image.
 COPY . .
@@ -19,4 +19,6 @@ COPY . .
 RUN npm run build
 
 # Run the web service on container startup.
-CMD [ "npm", "start" ]
+# CMD [ "npm", "start" ]
+
+CMD exec npm start | pino-stackdriver

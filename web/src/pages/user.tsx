@@ -2,6 +2,8 @@ import React from 'react';
 
 import { connect, useDispatch } from 'react-redux';
 
+import { Box } from '@material-ui/core';
+
 import { IState } from '../state/createStore';
 import { ILoginState } from '../state/reducers/login';
 import { IUserState } from '../state/reducers/user';
@@ -18,19 +20,18 @@ import TracksSection from '../components/user/tracks';
 import '../scss/pages/user.scss';
 
 type UserPageProps = {
-  session: ILoginState['session'];
   name: ILoginState['name'];
   fetching: IUserState['fetching'];
   error: IUserState['error'];
 };
 
-const UserPage: React.FunctionComponent<UserPageProps> = ({ session, name, fetching, error }) => {
+const UserPage: React.FunctionComponent<UserPageProps> = ({ name, fetching, error }) => {
   const history = useHistory();
 
   const dispatch = useDispatch();
 
   React.useEffect(() => {
-    if (!session) {
+    if (!name) {
       history.replace('/');
       return;
     }
@@ -40,8 +41,8 @@ const UserPage: React.FunctionComponent<UserPageProps> = ({ session, name, fetch
       return;
     }
 
-    dispatch(userRequested(session));
-  }, [dispatch, history, session, error]);
+    dispatch(userRequested());
+  }, [dispatch, history, name, error]);
 
   return (
     <Layout title={`${name}`}>
@@ -49,7 +50,7 @@ const UserPage: React.FunctionComponent<UserPageProps> = ({ session, name, fetch
         {fetching ? (
           <PageLoading disableShrink={true} />
         ) : (
-          <div className="user-data">
+          <Box className="user-data" mb={10}>
             <div className="playlists">
               <PlaylistsSection />
             </div>
@@ -59,8 +60,7 @@ const UserPage: React.FunctionComponent<UserPageProps> = ({ session, name, fetch
             <div className="tracks">
               <TracksSection />
             </div>
-          </div>
-          // <UserView playlists={playlists} artists={artists} tracks={tracks} />
+          </Box>
         )}
       </div>
     </Layout>
@@ -69,7 +69,6 @@ const UserPage: React.FunctionComponent<UserPageProps> = ({ session, name, fetch
 
 const mapStateToProps = (state: IState) => {
   return {
-    session: state.loginReducer.session,
     name: state.loginReducer.name,
     error: state.userReducer.error,
     fetching: state.userReducer.fetching,

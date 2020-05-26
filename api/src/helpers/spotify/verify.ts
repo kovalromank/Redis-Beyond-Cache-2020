@@ -1,14 +1,18 @@
 /* eslint-disable no-param-reassign */
-import { spotify, redis } from '../utils';
+import { spotify, redis } from '../../utils';
 
-type VerifyUserResponse = {
+type VerifyResponse = {
   authorized: boolean;
+  session?: RedisSpotifySession;
 };
 
-const verifyUser = async (
-  sessionKey: string,
-  session: RedisSpotifySession
-): Promise<VerifyUserResponse> => {
+const verifyUser = async (sessionKey: string): Promise<VerifyResponse> => {
+  const data = await redis.get(sessionKey);
+
+  if (!data) return { authorized: false };
+
+  const session: RedisSpotifySession = JSON.parse(data);
+
   if (session.expiresIn + 10 < Date.now() / 1000) {
     if (session.refreshToken) {
       spotify.setRefreshToken(session.refreshToken);
@@ -27,7 +31,7 @@ const verifyUser = async (
     await redis.expire(sessionKey, 24 * 3600);
   }
 
-  return { authorized: true };
+  return { authorized: true, session };
 };
 
 export default verifyUser;

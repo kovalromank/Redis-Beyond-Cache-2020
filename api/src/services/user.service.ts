@@ -2,24 +2,18 @@ import * as boom from '@hapi/boom';
 
 // import { Response } from 'spotify-web-api-node';
 
-import { redis, spotify } from '../utils';
-import validateUser from '../helpers/validate-spotify-user';
+import { spotify } from '../utils';
+import { verify, filter } from '../helpers/spotify';
+import { cache } from '../helpers/redis';
 import { USER_SERVICE_GET } from '../constants/redis';
 
 export const get = async (sessionKey: string): Promise<UserServiceResponse> => {
-  const data = await redis.get(sessionKey);
-
-  if (!data) throw boom.unauthorized();
-
-  const session: RedisSpotifySession = JSON.parse(data);
-
-  const cache = await redis.get(USER_SERVICE_GET + session.user.id);
-
-  if (cache) return JSON.parse(cache);
-
-  const { authorized } = await validateUser(sessionKey, session);
+  const { authorized, session } = await verify(sessionKey);
 
   if (!authorized) throw boom.unauthorized();
+
+  const data = await cache.get<UserServiceResponse>(USER_SERVICE_GET + session.user.id);
+  if (data) return data;
 
   spotify.setAccessToken(session.accessToken);
   const promises: any = [
@@ -35,29 +29,15 @@ export const get = async (sessionKey: string): Promise<UserServiceResponse> => {
 
   // Only return one image
 
-  playlists.items.forEach((playlist) => {
-    // eslint-disable-next-line no-param-reassign
-    if (playlist.images.length) playlist.images = [playlist.images[0]];
-  });
+  playlists.items.forEach((playlist) => filter.playlist(playlist));
 
-  artists.items.forEach((artist) => {
-    // eslint-disable-next-line no-param-reassign
-    if (artist.images.length) artist.images = [artist.images[0]];
-  });
+  artists.items.forEach((artist) => filter.artist(artist));
 
-  tracks.items.forEach((track) => {
-    // eslint-disable-next-line no-param-reassign
-    if (track.album.images.length) track.album.images = [track.album.images[0]];
-    // eslint-disable-next-line no-param-reassign
-    delete track.available_markets;
-    // eslint-disable-next-line no-param-reassign
-    delete track.album.available_markets;
-  });
+  tracks.items.forEach((track) => filter.track(track));
 
   const response = { playlists: playlists.items, artists: artists.items, tracks: tracks.items };
 
-  await redis.set(USER_SERVICE_GET + session.user.id, JSON.stringify(response), 'EX', 3600);
+  await cache.set(USER_SERVICE_GET + session.user.id, JSON.stringify(response));
 
   return response;
-  // return ({ playlists, artists, tracks } as any) as UserResponse;
 };

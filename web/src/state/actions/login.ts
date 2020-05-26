@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT } from '../types/login';
+import { LOGIN, LOGOUT, LOGOUT_REQUESTED } from '../types/login';
 import { ILoginState } from '../reducers/login';
 
 export const login = (data: ILoginState) => ({
@@ -8,4 +8,8 @@ export const login = (data: ILoginState) => ({
 
 export const logout = () => ({
   type: LOGOUT,
+});
+
+export const logoutRequested = () => ({
+  type: LOGOUT_REQUESTED,
 });

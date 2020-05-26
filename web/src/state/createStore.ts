@@ -3,14 +3,20 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import { load, save } from 'redux-localstorage-simple';
 
 import combinedReducers from './reducers/root-reducer';
+
+import userMiddleware from './middlewares/user';
+import { IUserState } from './reducers/user';
+
+import loginMiddleware from './middlewares/login';
 import { ILoginState } from './reducers/login';
 
-import userCustomMiddleware from './middlewares/userCustomMiddleware';
-import { IUserState } from './reducers/user';
+import mediaMiddleware from './middlewares/media';
+import { IMediaState } from './reducers/media';
 
 export type IState = {
   loginReducer: ILoginState;
   userReducer: IUserState;
+  mediaReducer: IMediaState;
 };
 
 export default () => {
@@ -18,7 +24,12 @@ export default () => {
     combinedReducers,
     getLoadedState(),
     composeWithDevTools(
-      applyMiddleware(save({ states: ['loginReducer'] }), userCustomMiddleware()),
+      applyMiddleware(
+        save({ states: ['loginReducer'] }),
+        userMiddleware(),
+        loginMiddleware(),
+        mediaMiddleware(),
+      ),
     ),
   );
 };

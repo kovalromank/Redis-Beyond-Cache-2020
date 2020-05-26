@@ -7,7 +7,7 @@ import { IState } from '../../state/createStore';
 import { IUserState } from '../../state/reducers/user';
 
 import Carousel from '../carousel';
-import CarouselItem from '../carousel-item';
+import CarouselItem from '../carousel/item';
 
 type PlaylistsProps = {
   playlists: IUserState['playlists'];
@@ -24,6 +24,7 @@ const Playlists: React.FunctionComponent<PlaylistsProps> = ({ playlists }) => {
     <Carousel title={<Title />}>
       {playlists.map((playlist, i) => (
         <CarouselItem
+          spotifyURI={playlist.uri}
           key={i}
           title={playlist.name}
           subtitle={playlist.owner.display_name}

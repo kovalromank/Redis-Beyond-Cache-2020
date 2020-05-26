@@ -29,15 +29,6 @@ const userService = async (params: IUserParams): Promise<IUserSuccess | IUserErr
     });
 
     return data;
-    // .then((response) => {
-    //   const data: SpotifyDetails = response.data;
-    //   console.log(data);
-    //   dispatch(update(data));
-    //   setLoading(false);
-    // })
-    // .catch((err) => {
-    //   console.error(err);
-    // });
   } catch (error) {
     if (error.response) {
       return {

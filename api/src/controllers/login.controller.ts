@@ -22,8 +22,14 @@ export const loginSpotify: Handler = async (req, res, next) => {
   res.redirect(url);
 };
 
+type LoginCompleteQuery = {
+  code?: string;
+  error?: string;
+  state?: string;
+};
+
 export const loginSpotifyComplete: Handler = async (req, res, next) => {
-  const { code, state, error } = req.query as LoginCompleteControllerQuery;
+  const { code, state, error } = req.query as LoginCompleteQuery;
 
   let loginResponse;
   try {

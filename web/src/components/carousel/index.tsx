@@ -5,8 +5,10 @@ import { Grid, IconButton, Container, Typography, Box, useMediaQuery } from '@ma
 import ChevronLeft from 'mdi-material-ui/ChevronLeft';
 import ChevronRight from 'mdi-material-ui/ChevronRight';
 
+import mainTheme from '../../theme';
+
 import 'react-multi-carousel/lib/styles.css';
-import '../scss/components/carousel.scss';
+import '../../scss/components/carousel.scss';
 
 const responsive = {
   xl: {
@@ -47,13 +49,15 @@ type CarouselProps = {
 };
 
 const Carousel: React.FunctionComponent<CarouselProps> = ({ title, children }) => {
-  const sm = useMediaQuery('(min-width:500px)');
+  const smAndUp = useMediaQuery((theme: typeof mainTheme) => theme.breakpoints.up('sm'));
 
   return (
     <Box py={5}>
       <Container>
         <Box mb={2}>
-          <Typography variant="h2">{title}</Typography>
+          <Typography variant={smAndUp ? 'h2' : 'h4'}>
+            <Box fontWeight="h2.fontWeight">{title}</Box>
+          </Typography>
         </Box>
       </Container>
       <ReactMultiCarousel
@@ -66,7 +70,7 @@ const Carousel: React.FunctionComponent<CarouselProps> = ({ title, children }) =
         renderButtonGroupOutside={true}
         customButtonGroup={<ButtonGroup />}
         infinite={true}
-        centerMode={sm}
+        centerMode={smAndUp}
       >
         {children}
       </ReactMultiCarousel>

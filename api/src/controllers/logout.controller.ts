@@ -1,9 +1,11 @@
-import { Handler, Request } from 'express';
+import { Handler } from 'express';
 
 import * as LogoutService from '../services/logout.service';
 
-export const logout: Handler = async (req: Request, res, next) => {
-  const { session } = req.query as LogoutControllerQuery;
+type LogoutQuery = AuthenticatedQuery;
+
+export const logout: Handler = async (req, res, next) => {
+  const { session } = req.query as LogoutQuery;
 
   await LogoutService.logout(session);
 

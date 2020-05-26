@@ -8,7 +8,7 @@ You'll need the following to run the web app and api:
 
 - [Node.js and npm](https://nodejs.org/en/)
 - [Git](https://git-scm.com/), to clone this repository
-- [Spotify App](https://developer.spotify.com/dashboard), note the `Client ID` and `Client Secret` fields returned by Spotify, you will need to enter those in the project's environment files. Make sure to configure the Redirect URIs in Spotify, by default set this to `http://localhost:8080/v1/login/spotify/complete`
+- [Spotify App](https://developer.spotify.com/dashboard), note the `Client ID` and `Client Secret` fields returned by Spotify, you will need to enter those in the project's environment files. Make sure to configure the Redirect URIs in Spotify, by default set this to `http://localhost:8080/api/login/spotify/complete`
 
 ## :rocket: Usage
 

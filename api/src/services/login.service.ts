@@ -37,73 +37,12 @@ export const loginSpotifyComplete = async (
   // Only a session that was created with loginSpotify allowed
   if (delKeys === 0) throw boom.unauthorized();
 
-  // const request = {
-  //   grant_type: 'authorization_code',
-  //   code,
-  //   redirect_uri: spotify.getRedirectURI(),
-  //   client_id: spotify.getClientId(),
-  //   client_secret: spotify.getClientSecret(),
-  // };
-
-  // const { data } = await axios.spotify({
-  //   method: 'POST',
-  //   url: 'https://accounts.spotify.com/api/token',
-  //   data: qs.stringify(request),
-  // });
-  // const tokens = data;
   const { body: tokens } = await spotify.authorizationCodeGrant(code);
-
-  // const requestBody = {
-  //   grant_type: 'authorization_code',
-  //   code,
-  //   redirect_uri: env.SPOTIFY_CLIENT_REDIRECT,
-  //   client_id: env.SPOTIFY_CLIENT_ID,
-  //   client_secret: env.SPOTIFY_CLIENT_SECRET,
-  // };
-
-  // const { data } = await axios.spotify({
-  //   method: 'POST',
-  //   url: 'https://accounts.spotify.com/api/token',
-  //   data: qs.stringify(requestBody),
-  // });
-  // tokens = data;
-  // log.error(tokensError, 'services/login failed at getting client tokens %o', {
-  //   tokens,
-  //   params: { code, error, state },
-  // });
-  // throw boom.boomify(err, {
-  //   message: 'Authorization error',
-  //   data: { tokens, params: { code, error, state } },
-  // });
-
-  // if (!tokens.access_token)
-  //   throw boom.badImplementation('Authorization error', { tokens, params: { code, error, state } });
 
   spotify.setAccessToken(tokens.access_token);
   const { body: user } = await spotify.getMe();
 
-  // Only store the first image
   if (user.images?.length) user.images = [user.images[0]];
-
-  // let user: SpotifyPrivateUser;
-  // try {
-  //   const { data } = await axios.spotify({
-  //     method: 'GET',
-  //     url: '/me',
-  //     headers: { Authorization: `Bearer ${tokens.access_token}` },
-  //   });
-  //   user = data;
-  // } catch (err) {
-  // log.error(userError, 'services/login failed at user info %o', {
-  //   tokens,
-  //   user,
-  //   params: { code, error, state },
-  // });
-  //   throw boom.boomify(err, {
-  //     message: 'User info error',
-  //     data: { tokens, user, params: { code, error, state } },
-  //   });
-  // }
 
   const session = uuidv4();
 

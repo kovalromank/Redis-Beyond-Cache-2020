@@ -2,22 +2,12 @@ import React from 'react';
 
 import { Toolbar, AppBar } from '@material-ui/core';
 
-// import { ILoginState } from '../state/reducers/login';
 import Spacer from './spacer';
 import UserHeader from './user-header';
 
 import logo from '../images/Spotify_Logo_RGB_Black.png';
 
-type AppBarProps = {
-  name?: string;
-  image?: {
-    width?: number;
-    height?: number;
-    url: string;
-  };
-};
-
-const DefaultAppBar: React.FunctionComponent<AppBarProps> = ({ name, image }) => {
+const DefaultAppBar: React.FunctionComponent = () => {
   return (
     <AppBar position="fixed" color="transparent" elevation={0}>
       <Toolbar>

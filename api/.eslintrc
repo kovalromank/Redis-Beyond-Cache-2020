@@ -8,14 +8,13 @@
       "@typescript-eslint/parser": [".ts"]
     },
     "import/resolver": {
+      "typescript": {},
       "node": {
         "extensions": [".js", ".ts"]
-      },
-      "typescript": {
-        "alwaysTryTypes": true
       }
     }
   },
+
   "rules": {
     "object-curly-spacing": ["warn", "always"],
     "no-unused-vars": [
@@ -54,6 +53,7 @@
       }
     ],
     "import/prefer-default-export": "off",
-    "import/extensions": 0
+    "import/extensions": 0,
+    "import/named": "off"
   }
 }
