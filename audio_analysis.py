@@ -161,9 +161,9 @@ class SpotubeDownload():
     def spotify_download(self):
         #print(subprocess.getoutput("cd audio_dir & spotdl --song " + self.slink + " -f D:/Documents/csc148/AudioAnalysis/audio_dir"))
         print(subprocess.getoutput(
-            "cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -f /root/audio_analysis/audio_dir"))
+            "cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -f /root/audio_analysis/audio_dir -k"))
         #print(subprocess.getoutput("cd audio_dir & for %a in (*.*) do ren \"%a\" \"audio.m4a\" & ffmpeg -i audio.m4a audio.wav"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name \"*.txt\" -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.txt\"' \;"))
+        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name \"*.mp3\" -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.mp3\"' \;"))
     def youtube_download(self):
         #print(self.ylink)
         ydl_opts = {
