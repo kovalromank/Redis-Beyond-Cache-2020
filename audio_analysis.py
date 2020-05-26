@@ -151,7 +151,7 @@ class AudioAnalysis:
             print("Video Shifted by " + str(i) + " seconds.")
             return [i, i + self.a_duration_of_sound]
 
-        print(subprocess.getoutput("rm /root/audio_analysis/audio_dir/*; rm /root/audio_analysis/video/*; rm /root/audio_analysis/video_dir/*"))
+        print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
 
 
 class SpotubeDownload():
