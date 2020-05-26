@@ -143,7 +143,7 @@ class AudioAnalysis:
 
     def correlation_find(self, val):
         for i in val:
-            self.correlate_final("/root/audio_analysis/video" + val[i])
+            self.correlate_final("/root/audio_analysis/video/" + val[i])
             # print(i)
 
         if len(self.max_offset) > 0:
