@@ -164,6 +164,7 @@ class AudioAnalysis:
     def delete_dir(self):
         print(subprocess.getoutput(
             "rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
+        return 'Done'
 
 
 class SpotubeDownload():
@@ -194,7 +195,7 @@ class SpotubeDownload():
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.ylink])
 
-        return "done"
+        return "Done"
 
 
 if __name__ == '__main__':

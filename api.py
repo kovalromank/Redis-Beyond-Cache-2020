@@ -11,8 +11,8 @@ from audio_analysis import AudioAnalysis, SpotubeDownload
 app = Flask(__name__)
 CORS(app)
 
-@app.route('/analyze', methods=['POST'])
-def update_product():
+@app.route('/youtube', methods=['POST'])
+def youtube():
     val = request.get_data()
     dict_str = val.decode("UTF-8")
     values = ast.literal_eval(dict_str)
@@ -22,14 +22,29 @@ def update_product():
 
     download = SpotubeDownload(values["ylink"], values["slink"])
     #download = SpotubeDownload(path_1, path_2)
-    return download.youtube_download()
-    # download.spotify_download()
-    # audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav", "/root/audio_analysis/video_dir/video.wav")
-    #
-    # val = audio.find_max_correlation()
-    # interval = audio.correlation_find(val)
-    # audio.delete_dir()
-    # return jsonify({"interval": interval}), 200
+    return download.youtube_download(), 200
+
+@app.route('/spotify', methods=['POST'])
+def spotify():
+    val = request.get_data()
+    dict_str = val.decode("UTF-8")
+    values = ast.literal_eval(dict_str)
+    required = ["slink", "ylink"]
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+
+    download = SpotubeDownload(values["ylink"], values["slink"])
+    return download.spotify_download(), 200
+
+@app.route('analyze', methods=["POST"])
+def analyze():
+    audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav",
+                          "/root/audio_analysis/video_dir/video.wav")
+
+    val = audio.find_max_correlation()
+    interval = audio.correlation_find(val)
+    audio.delete_dir()
+    return jsonify({"interval": interval}), 200
 
 if __name__ == '__main__':
 
