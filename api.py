@@ -36,7 +36,7 @@ def spotify():
     download = SpotubeDownload(values["ylink"], values["slink"])
     return download.spotify_download(), 200
 
-@app.route('analyze', methods=["POST"])
+@app.route('/analyze', methods=["POST"])
 def analyze():
     audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav",
                           "/root/audio_analysis/video_dir/video.wav")
