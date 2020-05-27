@@ -22,14 +22,14 @@ def update_product():
 
     download = SpotubeDownload(values["ylink"], values["slink"])
     #download = SpotubeDownload(path_1, path_2)
-    download.youtube_download()
-    download.spotify_download()
-    audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav", "/root/audio_analysis/video_dir/video.wav")
-
-    val = audio.find_max_correlation()
-    interval = audio.correlation_find(val)
-    audio.delete_dir()
-    return jsonify({"interval": interval}), 200
+    return download.youtube_download()
+    # download.spotify_download()
+    # audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav", "/root/audio_analysis/video_dir/video.wav")
+    #
+    # val = audio.find_max_correlation()
+    # interval = audio.correlation_find(val)
+    # audio.delete_dir()
+    # return jsonify({"interval": interval}), 200
 
 if __name__ == '__main__':
 
