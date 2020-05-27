@@ -148,10 +148,18 @@ class AudioAnalysis:
 
         if len(self.max_offset) > 0:
             i = self.max_offset.index(min(self.max_offset))
-            print("Video Shifted by " + str(i) + " seconds.")
-            return [i, i + self.a_duration_of_sound]
+            
+            if min(self.max_offset) == 0:
+                if 1 in self.max_offset:
+                    outlier = self.max_offset.index(1)
+                    if outlier < i:
+                        print("Video Shifted by " + str(outlier) + " seconds.")
+                        return [outlier, outlier + self.a_duration_of_sound]
+                else:
+                    print("Video Shifted by " + str(i) + " seconds.")
+                    return [i, i + self.a_duration_of_sound]
 
-        print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
+        #print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
 
     def delete_dir(self):
         print(subprocess.getoutput(
