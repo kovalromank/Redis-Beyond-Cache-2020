@@ -178,6 +178,8 @@ class SpotubeDownload():
         #print(subprocess.getoutput("cd audio_dir & for %a in (*.*) do ren \"%a\" \"audio.m4a\" & ffmpeg -i audio.m4a audio.wav"))
         print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name *.flac -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.flac\"' \;"))
         print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; ffmpeg -i audio.flac audio.wav"))
+        return "Done"
+
     def youtube_download(self):
         #print(self.ylink)
         ydl_opts = {
@@ -192,6 +194,7 @@ class SpotubeDownload():
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.ylink])
 
+        return "done"
 
 
 if __name__ == '__main__':
