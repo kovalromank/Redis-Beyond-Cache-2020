@@ -148,16 +148,16 @@ class AudioAnalysis:
 
         if len(self.max_offset) > 0:
             i = self.max_offset.index(min(self.max_offset))
-            
+
             if min(self.max_offset) == 0:
                 if 1 in self.max_offset:
                     outlier = self.max_offset.index(1)
                     if outlier < i:
                         print("Video Shifted by " + str(outlier) + " seconds.")
                         return [outlier, outlier + self.a_duration_of_sound]
-                else:
-                    print("Video Shifted by " + str(i) + " seconds.")
-                    return [i, i + self.a_duration_of_sound]
+            else:
+                print("Video Shifted by " + str(i) + " seconds.")
+                return [i, i + self.a_duration_of_sound]
 
         #print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
 
@@ -198,8 +198,8 @@ if __name__ == '__main__':
 
     path_1 = "https://www.youtube.com/watch?v=w2Ov5jzm3j8"
     path_2 = "https://open.spotify.com/track/0F7FA14euOIX8KcbEturGH?si=vGzh7hObTUWYsSHPD3aUdg"
-    # download = SpotubeDownload("https://www.youtube.com/watch?v=VpATBBRajP8", "https://open.spotify.com/track/5mpUKTdskZea0gStWzeHUZ?si=-C-OGfGWTFe7O_7PKE1WOg")
-    download = SpotubeDownload(path_1, path_2)
+    download = SpotubeDownload("https://www.youtube.com/watch?v=VpATBBRajP8", "https://open.spotify.com/track/5mpUKTdskZea0gStWzeHUZ?si=-C-OGfGWTFe7O_7PKE1WOg")
+    #download = SpotubeDownload(path_1, path_2)
     download.youtube_download()
     download.spotify_download()
     audio = AudioAnalysis("/root/audio_analysis/audio_dir/audio.wav", "/root/audio_analysis/video_dir/video.wav")
