@@ -54,8 +54,9 @@ class AudioAnalysis:
 
 
     def calculate_fingerprints(self, filename):
-        fpcalc_out = subprocess.getoutput('fpcalc -raw -length %i %s'
-                                          % (self.sample_time, filename))
+        process = subprocess.Popen(['fpcalc', '-raw', '-length', self.sample_time, filename], shell=True)
+        fpcalc_out, errs = process.communicate()
+        #fpcalc_out = subprocess.getoutput('fpcalc -raw -length %i %s' % (self.sample_time, filename))
         # print(fpcalc_out)
         fingerprint_index = fpcalc_out.find('FINGERPRINT=') + 12
         fingerprints = list(map(int, fpcalc_out[fingerprint_index:].split(',')))
@@ -135,9 +136,14 @@ class AudioAnalysis:
         #print(max_step)
         for i in range(max_step):
             # print(i, a_duration_of_sound+i)
-            subprocess.getoutput("sox " + self.videoPath + " /root/audio_analysis/video/file_out" + str(
+            '''subprocess.getoutput("sox " + self.videoPath + " /root/audio_analysis/video/file_out" + str(
                 i) + ".wav trim " + str(i) + " " + str(
-                int(self.a_duration_of_sound)))
+                int(self.a_duration_of_sound)))'''
+
+            process = subprocess.Popen(["sox", self.videoPath, "/root/audio_analysis/video/file_out", str(
+                i) + ".wav trim " + str(i) + " " + str(
+                int(self.a_duration_of_sound))])
+            fpcalc_out, errs = process.communicate()
             dict_[i] = "file_out" + str(i) + ".wav"
         return dict_
 
@@ -162,8 +168,8 @@ class AudioAnalysis:
         #print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
 
     def delete_dir(self):
-        print(subprocess.getoutput(
-            "rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
+        #print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
+        subprocess.Popen(['rm', '-rf', "/root/audio_analysis/audio_dir/*;",'rm', '-rf', '/root/audio_analysis/video/*;', 'rm', '-rf', '/root/audio_analysis/video_dir/*'])
 
 
 class SpotubeDownload():
@@ -174,10 +180,15 @@ class SpotubeDownload():
 
     def spotify_download(self):
         #print(subprocess.getoutput("cd audio_dir & spotdl --song " + self.slink + " -f D:/Documents/csc148/AudioAnalysis/audio_dir"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -o flac -f /root/audio_analysis/audio_dir"))
+        #print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -o flac -f /root/audio_analysis/audio_dir"))
+        subprocess.Popen(['cd', '/root/audio_analysis/audio_dir;', 'spotdl', '--song', self.slink, '-o', 'flac', '-f', '/root/audio_analysis/audio_dir'])
         #print(subprocess.getoutput("cd audio_dir & for %a in (*.*) do ren \"%a\" \"audio.m4a\" & ffmpeg -i audio.m4a audio.wav"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name *.flac -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.flac\"' \;"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; ffmpeg -i audio.flac audio.wav"))
+        #print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name *.flac -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.flac\"' \;"))
+        subprocess.Popen(
+            ['cd', '/root/audio_analysis/audio_dir;', 'find', '.',
+             '-type', 'f', '-name', '*.flac', '-exec', 'sh', '-c', 'x=\"{}\"; mv \"$x\" \"audio.flac\"', '\;'])
+        #print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; ffmpeg -i audio.flac audio.wav"))
+        subprocess.Popen(['cd', '/root/audio_analysis/audio_dir;', 'ffmpeg', '-i', 'audio.flac', 'audio.wav'])
         return "Done"
 
     def youtube_download(self):
