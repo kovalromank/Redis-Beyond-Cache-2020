@@ -56,7 +56,7 @@ class AudioAnalysis:
     def calculate_fingerprints(self, filename):
         fpcalc_out = subprocess.getoutput('fpcalc -raw -length %i %s'
                                           % (self.sample_time, filename))
-        # print(fpcalc_out)
+        print(fpcalc_out)
         fingerprint_index = fpcalc_out.find('FINGERPRINT=') + 12
         fingerprints = list(map(int, fpcalc_out[fingerprint_index:].split(',')))
 
@@ -135,9 +135,9 @@ class AudioAnalysis:
         #print(max_step)
         for i in range(max_step):
             # print(i, a_duration_of_sound+i)
-            subprocess.getoutput("sox " + self.videoPath + " /root/audio_analysis/video/file_out" + str(
+            print(subprocess.getoutput("sox " + self.videoPath + " /root/audio_analysis/video/file_out" + str(
                 i) + ".wav trim " + str(i) + " " + str(
-                int(self.a_duration_of_sound)))
+                int(self.a_duration_of_sound))))
             dict_[i] = "file_out" + str(i) + ".wav"
         return dict_
 
@@ -173,13 +173,18 @@ class SpotubeDownload():
         self.ylink = y_link
         self.slink = s_link
 
-    def spotify_download(self):
+    def spotify_download1(self):
         #print(subprocess.getoutput("cd audio_dir & spotdl --song " + self.slink + " -f D:/Documents/csc148/AudioAnalysis/audio_dir"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -o flac -f /root/audio_analysis/audio_dir"))
+        return(subprocess.getoutput("cd /root/audio_analysis/audio_dir; spotdl --song " + self.slink + " -o flac -f /root/audio_analysis/audio_dir"))
         #print(subprocess.getoutput("cd audio_dir & for %a in (*.*) do ren \"%a\" \"audio.m4a\" & ffmpeg -i audio.m4a audio.wav"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; find . -type f -name *.flac -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.flac\"' \;"))
-        print(subprocess.getoutput("cd /root/audio_analysis/audio_dir; ffmpeg -i audio.flac audio.wav"))
-        return "Done"
+
+    def spotify_download2(self):
+        return(subprocess.getoutput(
+            "cd /root/audio_analysis/audio_dir; find . -type f -name *.flac -exec sh -c 'x=\"{}\"; mv \"$x\" \"audio.flac\"' \;"))
+
+    def spotify_download3(self):
+        return(subprocess.getoutput(
+            "cd /root/audio_analysis/audio_dir; ffmpeg -i audio.flac audio.wav"))
 
     def youtube_download(self):
         #print(self.ylink)

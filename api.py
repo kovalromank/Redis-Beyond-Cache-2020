@@ -24,8 +24,8 @@ def youtube():
     #download = SpotubeDownload(path_1, path_2)
     return download.youtube_download(), 200
 
-@app.route('/spotify', methods=['POST'])
-def spotify():
+@app.route('/spotify1', methods=['POST'])
+def spotify1():
     val = request.get_data()
     dict_str = val.decode("UTF-8")
     values = ast.literal_eval(dict_str)
@@ -34,7 +34,31 @@ def spotify():
         return 'Missing values', 400
 
     download = SpotubeDownload(values["ylink"], values["slink"])
-    return download.spotify_download(), 200
+    return download.spotify_download1(), 200
+
+@app.route('/spotify2', methods=['POST'])
+def spotify2():
+    val = request.get_data()
+    dict_str = val.decode("UTF-8")
+    values = ast.literal_eval(dict_str)
+    required = ["slink", "ylink"]
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+
+    download = SpotubeDownload(values["ylink"], values["slink"])
+    return download.spotify_download2(), 200
+
+@app.route('/spotify3', methods=['POST'])
+def spotify3():
+    val = request.get_data()
+    dict_str = val.decode("UTF-8")
+    values = ast.literal_eval(dict_str)
+    required = ["slink", "ylink"]
+    if not all(k in values for k in required):
+        return 'Missing values', 400
+
+    download = SpotubeDownload(values["ylink"], values["slink"])
+    return download.spotify_download3(), 200
 
 @app.route('/analyze', methods=["POST"])
 def analyze():
