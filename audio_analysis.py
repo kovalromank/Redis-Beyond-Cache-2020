@@ -199,9 +199,8 @@ if __name__ == '__main__':
     val = audio.find_max_correlation()
     print(val)
 
-    audio.delete_dir()
     print(audio.correlation_find(val))
-
+    audio.delete_dir()
 
 
 
