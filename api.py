@@ -12,8 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 @app.route('/analyze', methods=['POST'])
-def update_product(id_):
-    product_id = id_
+def update_product():
     val = request.get_data()
     dict_str = val.decode("UTF-8")
     values = ast.literal_eval(dict_str)
