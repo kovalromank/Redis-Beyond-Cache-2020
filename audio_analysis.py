@@ -153,6 +153,10 @@ class AudioAnalysis:
 
         print(subprocess.getoutput("rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
 
+    def delete_dir(self):
+        print(subprocess.getoutput(
+            "rm -rf /root/audio_analysis/audio_dir/*; rm -rf /root/audio_analysis/video/*; rm -rf /root/audio_analysis/video_dir/*"))
+
 
 class SpotubeDownload():
 
@@ -195,6 +199,7 @@ if __name__ == '__main__':
     val = audio.find_max_correlation()
     print(val)
 
+    audio.delete_dir()
     print(audio.correlation_find(val))
 
 
