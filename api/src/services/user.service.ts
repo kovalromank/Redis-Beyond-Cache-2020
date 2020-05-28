@@ -7,12 +7,18 @@ import { verify, filter } from '../helpers/spotify';
 import { cache } from '../helpers/redis';
 import { USER_SERVICE_GET } from '../constants/redis';
 
-export const get = async (sessionKey: string): Promise<UserServiceResponse> => {
+type UserResponse = {
+  playlists: SpotifyApi.PlaylistObjectSimplified[];
+  artists: SpotifyApi.ArtistObjectFull[];
+  tracks: SpotifyApi.TrackObjectFull[];
+};
+
+export const get = async (sessionKey: string): Promise<UserResponse> => {
   const { authorized, session } = await verify(sessionKey);
 
   if (!authorized) throw boom.unauthorized();
 
-  const data = await cache.get<UserServiceResponse>(USER_SERVICE_GET + session.user.id);
+  const data = await cache.get<UserResponse>(USER_SERVICE_GET + session.user.id);
   if (data) return data;
 
   spotify.setAccessToken(session.accessToken);

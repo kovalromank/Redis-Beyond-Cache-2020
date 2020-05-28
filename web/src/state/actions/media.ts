@@ -1,4 +1,4 @@
-import { PLAY, PLAY_REQUESTED, PAUSE, PAUSE_REQUESTED } from '../types/media';
+import { PLAY, PLAY_REQUESTED, PAUSE, PAUSE_REQUESTED, UPDATE_REQUESTED } from '../types/media';
 import { IPlayMedia } from '../../models/media';
 
 export const playRequested = (data: string) => ({
@@ -17,4 +17,8 @@ export const pauseRequested = () => ({
 
 export const pause = () => ({
   type: PAUSE,
+});
+
+export const updateRequested = () => ({
+  type: UPDATE_REQUESTED,
 });

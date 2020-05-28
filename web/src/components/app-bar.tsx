@@ -1,17 +1,22 @@
 import React from 'react';
 
-import { Toolbar, AppBar } from '@material-ui/core';
+import { Toolbar, AppBar, Typography } from '@material-ui/core';
 
 import Spacer from './spacer';
 import UserHeader from './user-header';
 
-import logo from '../images/Spotify_Logo_RGB_Black.png';
+// import logo from '../images/Spotify_Logo_RGB_Black.png';
+
+import '../scss/components/app-bar.scss';
 
 const DefaultAppBar: React.FunctionComponent = () => {
   return (
-    <AppBar position="fixed" color="transparent" elevation={0}>
+    <AppBar position="fixed" className="app-bar" elevation={0}>
       <Toolbar>
-        <img height="40" width="auto" src={logo} alt="Logo" />
+        <Typography variant="h4" style={{ fontWeight: 'bold' }}>
+          InSync
+        </Typography>
+        {/* <img height="40" width="auto" src={logo} alt="Logo" /> */}
         <Spacer />
         <UserHeader />
       </Toolbar>

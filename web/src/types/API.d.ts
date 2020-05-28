@@ -4,8 +4,6 @@ type SpotifyDetails = {
   tracks: SpotifyApi.TrackObjectFull[];
 };
 
-type SpotifyMediaPlay = SpotifyApi.TrackObjectFull;
-
 type SpotifySession = {
   session: string;
   name: string;
@@ -16,4 +14,9 @@ type SpotifySession = {
     height?: number;
     url: string;
   };
+};
+
+type SpotifyMediaPlay = {
+  media: { track: SpotifyApi.TrackObjectFull; youtube: { id: string } };
+  error: string;
 };

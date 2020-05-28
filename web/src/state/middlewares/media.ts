@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 
 import { MiddlewareAPI, AnyAction } from 'redux';
 
-import { PLAY_REQUESTED, PAUSE_REQUESTED } from '../types/media';
+import { PLAY_REQUESTED, PAUSE_REQUESTED, UPDATE_REQUESTED } from '../types/media';
 import * as mediaService from '../../services/media';
 import { play, pause } from '../actions/media';
 
@@ -29,7 +29,7 @@ const userCustomMiddleware = () => {
           });
         break;
       }
-      case PAUSE_REQUESTED:
+      case PAUSE_REQUESTED: {
         mediaService
           .pause({ session: store.getState().loginReducer.session })
           .then(() => {
@@ -39,6 +39,24 @@ const userCustomMiddleware = () => {
             //
           });
         break;
+      }
+      case UPDATE_REQUESTED: {
+        console.log('UPDATE_REQUESTED');
+        const session = store.getState().loginReducer.session;
+        if (!session) return;
+
+        mediaService
+          .update({ session: store.getState().loginReducer.session })
+          .then((updateData: any) => {
+            if (updateData.media) {
+              store.dispatch(play(updateData as IPlaySuccess));
+            }
+          })
+          .catch((err) => {
+            //
+          });
+        break;
+      }
       default:
         next(action);
     }

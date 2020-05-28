@@ -3,7 +3,6 @@ import React from 'react';
 import SEO from './seo';
 import AppBar from './app-bar';
 // import Footer from './footer';
-import MediaController from '../components/media-controller';
 
 import '../scss/components/layout.scss';
 import { makeStyles } from '@material-ui/core';
@@ -40,10 +39,8 @@ const DefaultLayout: React.FunctionComponent<DefaultLayoutProps> = ({
           <main className="app-content">
             <div className="app-content-wrap">{children}</div>
           </main>
-          {/* <Footer /> */}
         </div>
       </div>
-      <MediaController />
     </>
   );
 };

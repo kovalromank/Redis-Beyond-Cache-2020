@@ -1,4 +1,4 @@
-type ParseURIResponse = {
+export type ParseURIResponse = {
   uri: string;
   type: 'playlist' | 'artist' | 'track' | 'album';
   id: string;

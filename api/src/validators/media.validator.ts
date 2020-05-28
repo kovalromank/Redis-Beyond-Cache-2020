@@ -12,3 +12,9 @@ export const pause: schema = {
     session: Joi.string().required(),
   }),
 };
+
+export const update: schema = {
+  query: Joi.object({
+    session: Joi.string().required(),
+  }),
+};

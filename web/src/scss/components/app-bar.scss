@@ -1,0 +1,7 @@
+@import '../variables';
+
+//TODO: Use a different component to not have !important everywhere?
+.app-bar {
+  background-color: change-color(#fafafa, $alpha: 0.87) !important;
+  color: rgba(0, 0, 0, 0.87) !important;
+}

@@ -1,30 +1,41 @@
 @import '../variables';
 
+$image-size-xs: 80px;
+$image-size: 100px;
+
 .media-controller {
   position: fixed;
   bottom: 0;
   right: 0;
   overflow: visible;
+  padding-left: 0;
+  margin: 0 !important;
+  left: 0;
+  border: 0;
 
   .container {
+    box-shadow: map-get($shadows, 0);
+    border-radius: 0;
     overflow: visible;
+    background: change-color(#000000, $alpha: 0.8);
     // background-color: $primary;
-    // color: #ffffff;
+    color: #ffffff;
 
     .image-wrapper {
-      display: none;
       position: relative;
-      width: 100px;
+      width: $image-size-xs;
 
       .image {
+        box-shadow: map-get($shadows, 0);
         bottom: 0;
         z-index: 1;
         width: 100%;
-        height: 100px;
-        position: absolute;
+        height: $image-size-xs;
+        position: static;
         background-position: center;
         background-repeat: no-repeat;
         background-size: cover;
+        border-radius: 0;
 
         .placeholder {
           font-size: 4rem;
@@ -32,26 +43,62 @@
       }
     }
 
-    .text {
-      width: 180px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+    .content {
+      padding: 12px;
+      max-width: calc(100% - #{$image-size-xs});
 
-    .button {
-      padding: 6px;
-      border-width: 1px;
-      border-style: solid;
+      .text {
+        max-width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-right: 4px;
+      }
+
+      .button {
+        padding: 6px;
+        border-width: 1px;
+        border-style: solid;
+      }
     }
   }
 }
 
 @media (min-width: map-get($grid-breakpoints, 'sm')) {
   .media-controller {
+    left: auto;
+    right: 16px;
+    bottom: 16px;
+
     .container {
+      padding: 16px;
+      border-radius: 4px;
+      box-shadow: map-get($shadows, 2);
+
       .image-wrapper {
         display: block;
+        width: $image-size;
+
+        .image {
+          height: $image-size;
+          position: absolute;
+          border-radius: 4px;
+          box-shadow: map-get($shadows, 2);
+
+          .placeholder {
+            font-size: 2rem;
+          }
+        }
+      }
+
+      .content {
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: 0;
+
+        .text {
+          width: 200px;
+        }
       }
     }
   }

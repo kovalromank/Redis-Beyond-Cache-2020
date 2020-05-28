@@ -8,6 +8,13 @@ const env = {
   REDIS_DB: Number.parseInt(process.env.REDIS_DB, 10),
   REDIS_PORT: Number.parseInt(process.env.REDIS_PORT, 10),
   REDIS_FAMILY: Number.parseInt(process.env.REDIS_FAMILY, 10),
+  YOUTUBE_API_KEY: process.env.YOUTUBE_API_KEY,
 };
+
+let failed = '';
+Object.entries(env).forEach(([key, value]) => {
+  if (value == null) failed += `, ${key}`;
+});
+if (failed.length) throw new Error(`Missing required environment variables: ${failed.substr(2)}`);
 
 export default env;

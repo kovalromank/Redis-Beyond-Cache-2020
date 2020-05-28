@@ -7,7 +7,8 @@ import { asyncMiddleware } from '../middlewares/async.middleware';
 
 const router = express.Router();
 
-router.post('/play', validate(MediaValidator.play), asyncMiddleware(MediaController.play));
-router.post('/pause', validate(MediaValidator.pause), asyncMiddleware(MediaController.pause));
+router.put('/play', validate(MediaValidator.play), asyncMiddleware(MediaController.play));
+router.put('/pause', validate(MediaValidator.pause), asyncMiddleware(MediaController.pause));
+router.put('/update', validate(MediaValidator.update), asyncMiddleware(MediaController.update));
 
 export default router;

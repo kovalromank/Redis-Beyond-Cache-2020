@@ -25,11 +25,23 @@ export const loginSpotify = async (): Promise<string> => {
   return spotify.createAuthorizeURL(SPOTIFY_SCOPES, state);
 };
 
+type LoginSpotifyCompleteResponse = {
+  session: string;
+  name: string;
+  id: string;
+  uri: string;
+  image?: {
+    width?: number;
+    height?: number;
+    url: string;
+  };
+};
+
 export const loginSpotifyComplete = async (
   code?: string,
   error?: string,
   state?: string
-): Promise<LoginSpotifyCompleteServiceResponse> => {
+): Promise<LoginSpotifyCompleteResponse> => {
   if (error || !code) throw boom.badRequest('Invalid parameters');
 
   const delKeys = await redis.del(state);
@@ -53,11 +65,12 @@ export const loginSpotifyComplete = async (
     scope: tokens.scope,
     expiresIn: tokens.expires_in + Date.now() / 1000,
     refreshToken: tokens.refresh_token,
+    queue: [],
   };
 
   await redis.set(session, JSON.stringify(response), 'EX', 24 * 3600);
 
-  const returns: LoginSpotifyCompleteServiceResponse = {
+  const returns: LoginSpotifyCompleteResponse = {
     session,
     id: user.id,
     name: user.display_name,
